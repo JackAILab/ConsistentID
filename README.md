@@ -1,7 +1,8 @@
 # ConsistentID
 Customized ID Consistent for human<br>
 [Demo Link](http://consistentid.natapp1.cc/)<br>
-[Paper Link]()
+[Project page Link]()<br>
+[Paper Link](https://ssugarwh.github.io/consistentid.github.io/)
 
 Diffusion-based technologies have made significant strides, particularly in personalized and customized facial generation.  
 However, existing methods face challenges in achieving high-fidelity and detailed identity (ID) consistency, primarily due to insufficient fine-grained control over facial areas and the lack of a comprehensive strategy for ID preservation by fully considering intricate facial details and the overall face. 
