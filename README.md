@@ -1,8 +1,29 @@
-# ConsistentID
-Customized ID Consistent for human<br>
-[Demo Link](http://consistentid.natapp1.cc/)<br>
-[Project page Link](https://ssugarwh.github.io/consistentid.github.io/)<br>
-[Paper Link]()
+<p align="center">
+  <img src="https://github.com/JackAILab/ConsistentID/assets/135965025/c0594480-d73d-4268-95ca-5494ca2a61e4" height=100>
+
+</p>
+
+<!-- ## <div align="center"><b>ConsistentID</b></div> -->
+
+<div align="center">
+  
+## ConsistentID : Portrait Generation with Multimodal Fine-Grained Identity Preserving  [![Paper page](https://huggingface.co/datasets/huggingface/badges/resolve/main/paper-page-md-dark.svg)]()
+[📄[Paper]()] &emsp; [🚩[Project Page](https://ssugarwh.github.io/consistentid.github.io/)] &emsp; [🖼[Gradio Demo](http://consistentid.natapp1.cc/)] <br>
+
+
+</div>
+
+### 🌠  **Key Features:**
+
+1. Portrait generation with extremely high **ID fidelity**, without sacrificing diversity, text controllability.
+2. Rapid customization **within seconds**, with no additional LoRA training.
+3. Can serve as an **Adapter** to collaborate with other Base Models alongside LoRA modules in community.
+
+---
+
+
+## 🏷️Abstract
+
 
 Diffusion-based technologies have made significant strides, particularly in personalized and customized facial generation.  
 However, existing methods face challenges in achieving high-fidelity and detailed identity (ID) consistency, primarily due to insufficient fine-grained control over facial areas and the lack of a comprehensive strategy for ID preservation by fully considering intricate facial details and the overall face. 
@@ -16,7 +37,7 @@ Code, models, and datasets are provided in the supplementary materials to enable
 
 
 
-## Requirements
+## 🔧Requirements
 
 To install requirements:
 
@@ -24,7 +45,7 @@ To install requirements:
 pip3 install -r requirements.txt
 ```
 
-## Data Preparation
+## 📦️Data Preparation
 
 Prepare Data in the following format
 
@@ -49,18 +70,20 @@ The .json file should be like
 ]
 ```
 
-## Train
+## 🚀Train
+Ensure that the workspace is the root directory of the project.
 
 ```setup
 bash train_bash.sh
 ```
 
-## Infer
+## 🧪Infer
+Ensure that the workspace is the root directory of the project.
 
 ```setup
 python infer.py
 ```
 
-## Model weights
+## ⏬Model weights
 
 We will upload pretrained weights as soon as possialbe. Feel free to check our model structure for now.
