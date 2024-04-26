@@ -93,7 +93,7 @@ The pre-trained model parameters of the model can now be downloaded on [Google D
 
 ## 🚩 To-Do List
 - [x] Release training, evaluation code and demo!
-- [ ] Train SDXL models with larger data for enhanced aesthetics and broader general capabilities.
+- [ ] Retrain with more data and the SDXL base model to enhance aesthetics and generalization.
 - [ ] Release a multi-ID input version to guide the improvement of ID diversity.
 - [ ] Optimize training and inference structures to further improve text following and ID decoupling capabilities.
 
