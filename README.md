@@ -88,13 +88,13 @@ python infer.py
 ```
 
 ## ⏬ Model weights
-We are hosting the model weights on huggingface to achieve a faster and more stable demo experience, so stay tuned ~
+We are hosting the model weights on **huggingface** to achieve a faster and more stable demo experience, so stay tuned ~
 The pre-trained model parameters of the model can now be downloaded on [Google Drive](https://drive.google.com/file/d/1jCHICryESmNkzGi8J_FlY3PjJz9gqoSI/view?usp=drive_link) or [Baidu Netdisk](https://pan.baidu.com/s/1NAVmH8S7Ls5rZc-snDk1Ng?pwd=nsh6).
 
 ## 🚩 To-Do List
-- [ ] Release training, evaluation code and demo!
-- [x] Train SDXL models with larger data for enhanced aesthetics and broader general capabilities.
-- [x] Release a multi-ID input version to guide the improvement of ID diversity.
-- [x] Optimize training and inference structures to further improve text following capabilities.
+- [x] Release training, evaluation code and demo!
+- [ ] Train SDXL models with larger data for enhanced aesthetics and broader general capabilities.
+- [ ] Release a multi-ID input version to guide the improvement of ID diversity.
+- [ ] Optimize training and inference structures to further improve text following and ID decoupling capabilities.
 
 
