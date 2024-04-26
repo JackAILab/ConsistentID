@@ -16,9 +16,9 @@ from functions import process_text_with_markers, masks_for_unique_values, fetch_
 from functions import ProjPlusModel, masks_for_unique_values
 from attention import Consistent_IPAttProcessor, Consistent_AttProcessor, FacialEncoder
 
-#TODO Import BiSeNet's model file
+#TODO Import BiSeNet's model file Added 
 sys.path.append("")
-from model import BiSeNet
+from model.build_BiSeNet import BiSeNet
 
 PipelineImageInput = Union[
     PIL.Image.Image,
