@@ -16,8 +16,9 @@ from functions import process_text_with_markers, masks_for_unique_values, fetch_
 from functions import ProjPlusModel, masks_for_unique_values
 from attention import Consistent_IPAttProcessor, Consistent_AttProcessor, FacialEncoder
 
-#TODO Import BiSeNet's model file
-sys.path.append("")
+#Import BiSeNet's model file
+import sys
+sys.path.append("./models/BiSeNet")
 from model import BiSeNet
 
 PipelineImageInput = Union[
@@ -63,7 +64,7 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
         ### BiSeNet
         self.bise_net = BiSeNet(n_classes = 19)
         self.bise_net.cuda()
-        self.bise_net_cp='' #TODO Import BiSeNet model
+        self.bise_net_cp='./models/BiSeNet_pretrained_for_ConsistentID.pth' # Import BiSeNet model
         self.bise_net.load_state_dict(torch.load(self.bise_net_cp))
         self.bise_net.eval()
         # Colors for all 20 parts
