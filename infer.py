@@ -8,8 +8,8 @@ import sys
 
 # TODO import base SD model and pretrained ConsistentID model
 device = "cuda"
-base_model_path = ""
-consistentID_path = ""
+base_model_path = "SG161222/Realistic_Vision_V6.0_B1_noVAE"
+consistentID_path = "./ConsistentID_model_facemask_pretrain_50w" # pretrained ConsistentID model
 
 # Gets the absolute path of the current script
 script_directory = os.path.dirname(os.path.realpath(__file__))
@@ -52,7 +52,7 @@ generator = torch.Generator(device=device).manual_seed(2024)
 images = pipe(
     prompt=prompt,
     width=512,    
-    height=512,
+    height=768,
     input_id_images=select_images,
     negative_prompt=negative_prompt,
     num_images_per_prompt=1,

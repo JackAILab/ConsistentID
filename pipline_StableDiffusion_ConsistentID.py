@@ -5,7 +5,8 @@ import numpy as np
 from PIL import Image
 import torch
 from torchvision import transforms
-from insightface.app import FaceAnalysis
+from insightface.app import FaceAnalysis 
+### insight-face installation can be found at https://github.com/deepinsight/insightface
 from safetensors import safe_open
 from huggingface_hub.utils import validate_hf_hub_args
 from transformers import CLIPImageProcessor, CLIPVisionModelWithProjection
@@ -16,9 +17,17 @@ from functions import process_text_with_markers, masks_for_unique_values, fetch_
 from functions import ProjPlusModel, masks_for_unique_values
 from attention import Consistent_IPAttProcessor, Consistent_AttProcessor, FacialEncoder
 
+<<<<<<< HEAD
 #Import BiSeNet's model file
 import sys
 sys.path.append("./models/BiSeNet")
+=======
+###TODO Import BiSeNet's model file
+### Model can be import from https://github.com/zllrunning/face-parsing.PyTorch?tab=readme-ov-file
+### We use the ckpt of 79999_iter.pth: https://drive.google.com/open?id=154JgKpzCPW82qINcVieuPH3fZ2e0P812
+### Thanks for the open source of face-parsing model.
+sys.path.append("")
+>>>>>>> 6f06fd81331aaed15193b840b17e221773a1abe2
 from model import BiSeNet
 
 PipelineImageInput = Union[
@@ -39,7 +48,7 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
         subfolder: str = '',
         trigger_word_ID: str = '<|image|>',
         trigger_word_facial: str = '<|facial|>',
-        image_encoder_path: str = '',   # TODO Import CLIP pretrained model
+        image_encoder_path: str = 'laion/CLIP-ViT-H-14-laion2B-s32B-b79K',   # TODO Import CLIP pretrained model
         torch_dtype = torch.float16,
         num_tokens = 4,
         lora_rank= 128,
@@ -449,7 +458,7 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
         ) = self.encode_prompt_with_trigger_word(
             prompt = prompt,
             face_caption = face_caption,
-            # prompt_2=None, #没用上的注释掉
+            # prompt_2=None,  
             key_parsing_mask_list=key_parsing_mask_list,
             device=device,
             max_num_facials = 5,
