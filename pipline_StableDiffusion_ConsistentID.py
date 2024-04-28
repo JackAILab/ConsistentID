@@ -16,7 +16,7 @@ from diffusers.utils import _get_model_file
 from functions import process_text_with_markers, masks_for_unique_values, fetch_mask_raw_image, tokenize_and_mask_noun_phrases_ends, prepare_image_token_idx
 from functions import ProjPlusModel, masks_for_unique_values
 from attention import Consistent_IPAttProcessor, Consistent_AttProcessor, FacialEncoder
-from model import BiSeNet
+from models import BiSeNet
 
 
 PipelineImageInput = Union[
