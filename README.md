@@ -49,10 +49,17 @@ Finally, a large number of experiments were conducted in this article, and Consi
 
 ## 🔧 Requirements
 
-To install requirements:
+- Python >= 3.8 (Recommend to use [Anaconda](https://www.anaconda.com/download/#linux) or [Miniconda](https://docs.conda.io/en/latest/miniconda.html))
+- [PyTorch >= 2.0.0](https://pytorch.org/)
+- cuda==11.8
 
-```setup
-pip3 install -r requirements.txt
+```bash
+conda create --name ConsistentID python=3.8.10
+conda activate ConsistentID
+pip install -U pip
+
+# Install requirements
+pip install -r requirements.txt
 ```
 
 ## 📦️ Data Preparation
