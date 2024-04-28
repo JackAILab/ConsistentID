@@ -16,19 +16,8 @@ from diffusers.utils import _get_model_file
 from functions import process_text_with_markers, masks_for_unique_values, fetch_mask_raw_image, tokenize_and_mask_noun_phrases_ends, prepare_image_token_idx
 from functions import ProjPlusModel, masks_for_unique_values
 from attention import Consistent_IPAttProcessor, Consistent_AttProcessor, FacialEncoder
-
-<<<<<<< HEAD
-#Import BiSeNet's model file
-import sys
-sys.path.append("./models/BiSeNet")
-=======
-###TODO Import BiSeNet's model file
-### Model can be import from https://github.com/zllrunning/face-parsing.PyTorch?tab=readme-ov-file
-### We use the ckpt of 79999_iter.pth: https://drive.google.com/open?id=154JgKpzCPW82qINcVieuPH3fZ2e0P812
-### Thanks for the open source of face-parsing model.
-sys.path.append("")
->>>>>>> 6f06fd81331aaed15193b840b17e221773a1abe2
 from model import BiSeNet
+
 
 PipelineImageInput = Union[
     PIL.Image.Image,
