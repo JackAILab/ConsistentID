@@ -107,3 +107,22 @@ We are hosting the model weights on **huggingface** to achieve a faster and more
 The pre-trained model parameters of the model can now be downloaded on [Google Drive](https://drive.google.com/file/d/1jCHICryESmNkzGi8J_FlY3PjJz9gqoSI/view?usp=drive_link) or [Baidu Netdisk](https://pan.baidu.com/s/1NAVmH8S7Ls5rZc-snDk1Ng?pwd=nsh6).
 
 
+## Acknowledgement
+* Inspired from many excellent demos and repos, including [IPAdapter](https://github.com/tencent-ailab/IP-Adapter), [FastComposer](https://github.com/mit-han-lab/fastcomposer), [PhotoMaker](https://github.com/TencentARC/PhotoMaker). Thanks for their great works!
+* Thanks to the open source contributions of the following work: [face-parsing.PyTorch](https://github.com/VisionSystemsInc/face-parsing.PyTorch), [LLaVA](https://github.com/haotian-liu/LLaVA), [insightface](https://github.com/deepinsight/insightface), [FFHQ](https://github.com/NVlabs/ffhq-dataset), [CelebA](https://github.com/switchablenorms/CelebAMask-HQ), [SFHQ](https://github.com/SelfishGene/SFHQ-dataset).
+* Thanks to the [HuggingFace](https://github.com/huggingface) gradio team for their free GPU support!
+
+
+
+## Citation
+If you found this code helpful, please consider citing:
+~~~
+@article{huang2024consistentid,
+  title={ConsistentID: Portrait Generation with Multimodal Fine-Grained Identity Preserving},
+  author={Huang, Jiehui and Dong, Xiao and Song, Wenhui and Li, Hanhui and Zhou, Jun and Cheng, Yuhao and Liao, Shutao and Chen, Long and Yan, Yiqiang and Liao, Shengcai and others},
+  journal={arXiv preprint arXiv:2404.16771},
+  year={2024}
+}
+~~~
+
+
