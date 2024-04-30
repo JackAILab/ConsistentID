@@ -6,7 +6,7 @@ from datetime import datetime
 from PIL import Image
 from diffusers.utils import load_image
 from diffusers import EulerDiscreteScheduler
-from pipline_StableDiffusion_ConsistentID import ConsistentIDStableDiffusionPipeline
+from pipeline_StableDiffusion_ConsistentID import ConsistentIDStableDiffusionPipeline
 import sys
 # print(gr.__version__)
 # 4.16.0
