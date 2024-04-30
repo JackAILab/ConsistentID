@@ -215,7 +215,7 @@ def parse_args():
     parser.add_argument(
         "--pretrained_model_name_or_path",
         type=str,
-        default="/data6/huangjiehui_m22/pretrained_model/Realistic_Vision_V6.0_B1_noVAE", 
+        default="runwayml/stable-diffusion-v1-5", 
         required=False,
     )
     parser.add_argument(
@@ -238,7 +238,7 @@ def parse_args():
     parser.add_argument(
         "--image_encoder_path",
         type=str,
-        default="/data6/huangjiehui_m22/pretrained_model/CLIP-ViT-H-14-laion2B-s32B-b79K",
+        default="laion/CLIP-ViT-H-14-laion2B-s32B-b79K",
         required=False,
         help="Path to CLIP image encoder",
     )
