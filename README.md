@@ -69,7 +69,7 @@ Prepare Data in the following format
 
     ├── data
     |   ├── JSON_all.json 
-    |   ├── resize_IMG # Imgaes 
+    |   ├── resize_IMG # Images
     |   ├── all_faceID  # FaceID
     |   └── parsing_mask_IMG # Parsing Mask 
 
