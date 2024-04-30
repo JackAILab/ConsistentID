@@ -32,6 +32,14 @@ pipe.load_ConsistentID_model(
 
 pipe.scheduler = EulerDiscreteScheduler.from_config(pipe.scheduler.config)
 
+# lora_model_name = os.path.basename(lora_path)
+# pipe.load_lora_weights(os.path.dirname(lora_path), weight_name=lora_model_name) # trigger: HTA
+### If there's a specific adapter name defined for this LoRA, use it; otherwise, the default might work.
+### Ensure 'adapter_name' matches what you intend to use or remove if not needed in your setup.
+# pipe.set_adapter_settings(adapter_name="your_adapter_name_here") # Uncomment and adjust as necessary
+# pipe.set_adapters(,["ConsistentID", "more_art-full"] adapter_weights=[1.0, 0.5]) # TODO
+### Fuse the loaded LoRA into the pipeline
+# pipe.fuse_lora()
 
 ### input image TODO
 select_images = load_image(script_directory+"/images/person.jpg")
