@@ -34,10 +34,9 @@
 
 ## 🚩 To-Do List
 Your star will help facilitate the process.
-- [x] Release training, evaluation code, and demo!
-- [ ] Retrain with more data and the SDXL base model to enhance aesthetics and generalization.
+- [x] Release ConsistentID training, evaluation code, and demo!
+- [ ] Release an SDXL model trained with more data, with enhanced resolution and generalizability.
 - [ ] Release a multi-ID input version to guide the improvement of ID diversity.
-- [ ] Optimize training and inference structures to further improve text following and ID decoupling capabilities.
 
 ## 🏷️ Abstract
 
