@@ -35,8 +35,8 @@
 ## 🚩 To-Do List
 Your star will help facilitate the process.
 - [x] Release ConsistentID training, evaluation code, and demo!
-- [ ] Release an SDXL model trained with more data, with enhanced resolution and generalizability.
-- [ ] Release a multi-ID input version to guide the improvement of ID diversity.
+- [ ] Release the SDXL model trained with more data, with enhanced resolution and generalizability.
+- [ ] Release the multi-ID input version to guide the improvement of ID diversity.
 
 ## 🏷️ Abstract
 
@@ -76,12 +76,11 @@ The .json file should be like
 ```
 [
     {
-        "resize_IMG": "Path to resized image...",
-        "parsing_color_IMG": "...",
+        "IMG": "Path of image...",
         "parsing_mask_IMG": "...",
         "vqa_llva": "...",
         "id_embed_file_resize": "...",
-        "vqa_llva_more_face_detail": "..."
+        "vqa_llva_facial": "..."
     },
     ...
 ]
