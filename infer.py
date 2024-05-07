@@ -40,7 +40,7 @@ pipe.scheduler = EulerDiscreteScheduler.from_config(pipe.scheduler.config)
 # pipe.fuse_lora()
 
 ### input image 
-select_images = load_image(script_directory+"/images/person.jpg")
+select_images = load_image(="./examples/albert_einstein.jpg")
 # hyper-parameter
 num_steps = 50
 merge_steps = 30
@@ -67,6 +67,6 @@ images = pipe(
     generator=generator,
 ).images[0]
 
-images.save("./images/result.jpg")
+images.save("./result.jpg")
 
 
