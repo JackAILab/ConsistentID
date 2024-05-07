@@ -8,18 +8,17 @@ from diffusers.utils import load_image
 from diffusers import EulerDiscreteScheduler
 from pipline_StableDiffusion_ConsistentID import ConsistentIDStableDiffusionPipeline
 import sys
-# print(gr.__version__)
-# 4.16.0
 
 # Gets the absolute path of the current script
 script_directory = os.path.dirname(os.path.realpath(__file__))
 
+# The GPU peak consumption is about 6G.
 def process(inputImage,prompt,negative_prompt):
 
     device = "cuda"
-    # TODO import base SD model and pretrained ConsistentID model
-    base_model_path = ""
-    consistentID_path = ""
+    ### Download the model from huggingface and put it locally, then place the model in a local directory and specify the directory location.
+    base_model_path = "SG161222/Realistic_Vision_V6.0_B1_noVAE"
+    consistentID_path = "JackAILab/ConsistentID/ConsistentID-v1.bin"
 
     ### Load base model
     pipe = ConsistentIDStableDiffusionPipeline.from_pretrained(
@@ -72,8 +71,14 @@ def process(inputImage,prompt,negative_prompt):
     ).images[0]
 
     current_date = datetime.today()
-    images.save(script_directory+f"/images/gradio_outputs/{current_date}-{seed}"+".jpg")
-    return script_directory+f"/images/gradio_outputs/{current_date}-{seed}"+".jpg"
+
+    output_dir = script_directory + f"/images/gradio_outputs"
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    images.save(os.path.join(output_dir, f"{current_date}-{seed}.jpg"))
+
+    return os.path.join(output_dir, f"{current_date}-{seed}.jpg")
 
 
 iface = gr.Interface(
