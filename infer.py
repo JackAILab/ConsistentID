@@ -6,13 +6,10 @@ from pipline_StableDiffusion_ConsistentID import ConsistentIDStableDiffusionPipe
 import sys
 
 
-# TODO import base SD model and pretrained ConsistentID model
+### Download from huggingface, then put the model local, then place the model in a local directory and specify the directory location.
 device = "cuda"
 base_model_path = "SG161222/Realistic_Vision_V6.0_B1_noVAE"
-consistentID_path = "./ConsistentID_model_facemask_pretrain_50w" # pretrained ConsistentID model
-
-# Gets the absolute path of the current script
-script_directory = os.path.dirname(os.path.realpath(__file__))
+consistentID_path = "JackAILab/ConsistentID/ConsistentID-v1.bin" 
 
 ### Load base model
 pipe = ConsistentIDStableDiffusionPipeline.from_pretrained(
@@ -32,6 +29,7 @@ pipe.load_ConsistentID_model(
 
 pipe.scheduler = EulerDiscreteScheduler.from_config(pipe.scheduler.config)
 
+### Experimental feature, using LoRA modules in community
 # lora_model_name = os.path.basename(lora_path)
 # pipe.load_lora_weights(os.path.dirname(lora_path), weight_name=lora_model_name) # trigger: HTA
 ### If there's a specific adapter name defined for this LoRA, use it; otherwise, the default might work.
@@ -41,7 +39,7 @@ pipe.scheduler = EulerDiscreteScheduler.from_config(pipe.scheduler.config)
 ### Fuse the loaded LoRA into the pipeline
 # pipe.fuse_lora()
 
-### input image TODO
+### input image 
 select_images = load_image(script_directory+"/images/person.jpg")
 # hyper-parameter
 num_steps = 50
@@ -50,7 +48,7 @@ merge_steps = 30
 prompt = "A man, in a forest, adventuring"
 negative_prompt = "monochrome, lowres, bad anatomy, worst quality, low quality, blurry"
 
-#Extend Prompt
+### Extend Prompt
 prompt = "cinematic photo," + prompt + ", 50mm photograph, half-length portrait, film, bokeh, professional, 4k, highly detailed"
 negtive_prompt_group="((((ugly)))), (((duplicate))), ((morbid)), ((mutilated)), [out of frame], extra fingers, mutated hands, ((poorly drawn hands)), ((poorly drawn face)), (((mutation))), (((deformed))), ((ugly)), blurry, ((bad anatomy)), (((bad proportions))), ((extra limbs)), cloned face, (((disfigured))). out of frame, ugly, extra limbs, (bad anatomy), gross proportions, (malformed limbs), ((missing arms)), ((missing legs)), (((extra arms))), (((extra legs))), mutated hands, (fused fingers), (too many fingers), (((long neck)))"
 negative_prompt = negative_prompt + negtive_prompt_group
@@ -69,6 +67,6 @@ images = pipe(
     generator=generator,
 ).images[0]
 
-images.save(script_directory+"/images/sample.jpg")
+images.save("./images/result.jpg")
 
 
