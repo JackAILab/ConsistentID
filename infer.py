@@ -6,7 +6,7 @@ from pipline_StableDiffusion_ConsistentID import ConsistentIDStableDiffusionPipe
 import sys
 
 
-### Download from huggingface, then put the model local, then place the model in a local directory and specify the directory location.
+### Download the model from huggingface and put it locally, then place the model in a local directory and specify the directory location.
 device = "cuda"
 base_model_path = "SG161222/Realistic_Vision_V6.0_B1_noVAE"
 consistentID_path = "JackAILab/ConsistentID/ConsistentID-v1.bin" 
