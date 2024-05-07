@@ -79,8 +79,9 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
                     [255, 0, 255], [255, 85, 255], [255, 170, 255],
                     [0, 255, 255], [85, 255, 255], [170, 255, 255]]
         
-        ### LLVA Optional
-        self.llva_model_path = "" # TODO import llava weights (optional)
+        ### LLVA (Optional)
+        self.llva_model_path = "liuhaotian/llava-v1.5-13b" # TODO 
+        # IMPORTANT! Download the openai/clip-vit-large-patch14-336 model and specify the model path in config.json ("mm_vision_tower": "openai/clip-vit-large-patch14-336").
         self.llva_prompt = "Describe this person's facial features for me, including face, ears, eyes, nose, and mouth." 
         self.llva_tokenizer, self.llva_model, self.llva_image_processor, self.llva_context_len = None,None,None,None #load_pretrained_model(self.llva_model_path)
 
