@@ -20,7 +20,7 @@ from attention import Consistent_IPAttProcessor, Consistent_AttProcessor, Facial
 ### Model can be imported from https://github.com/zllrunning/face-parsing.PyTorch?tab=readme-ov-file
 ### We use the ckpt of 79999_iter.pth: https://drive.google.com/open?id=154JgKpzCPW82qINcVieuPH3fZ2e0P812
 ### Thanks for the open source of face-parsing model.
-from models import BiSeNet
+from models.BiSeNet.model import BiSeNet
 
 PipelineImageInput = Union[
     PIL.Image.Image,
@@ -29,7 +29,7 @@ PipelineImageInput = Union[
     List[torch.FloatTensor],
 ]
 
-
+### Download the pretrained model from huggingface and put it locally, then place the model in a local directory and specify the directory location.
 class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
     
     @validate_hf_hub_args
@@ -40,7 +40,7 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
         subfolder: str = '',
         trigger_word_ID: str = '<|image|>',
         trigger_word_facial: str = '<|facial|>',
-        image_encoder_path: str = 'laion/CLIP-ViT-H-14-laion2B-s32B-b79K',   # TODO Import CLIP pretrained model
+        image_encoder_path: str = 'laion/CLIP-ViT-H-14-laion2B-s32B-b79K',  
         torch_dtype = torch.float16,
         num_tokens = 4,
         lora_rank= 128,
@@ -65,7 +65,7 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
         ### BiSeNet
         self.bise_net = BiSeNet(n_classes = 19)
         self.bise_net.cuda()
-        self.bise_net_cp='./models/BiSeNet_pretrained_for_ConsistentID.pth' # Import BiSeNet model
+        self.bise_net_cp='JackAILab/ConsistentID/face_parsing.pth' 
         self.bise_net.load_state_dict(torch.load(self.bise_net_cp))
         self.bise_net.eval()
         # Colors for all 20 parts
@@ -80,7 +80,7 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
                     [0, 255, 255], [85, 255, 255], [170, 255, 255]]
         
         ### LLVA Optional
-        self.llva_model_path = "" #TODO import llava weights
+        self.llva_model_path = "" # TODO import llava weights (optional)
         self.llva_prompt = "Describe this person's facial features for me, including face, ears, eyes, nose, and mouth." 
         self.llva_tokenizer, self.llva_model, self.llva_image_processor, self.llva_context_len = None,None,None,None #load_pretrained_model(self.llva_model_path)
 
@@ -88,7 +88,7 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
             cross_attention_dim=self.unet.config.cross_attention_dim, 
             id_embeddings_dim=512,
             clip_embeddings_dim=self.image_encoder.config.hidden_size, 
-            num_tokens=self.num_tokens,  # 4
+            num_tokens=self.num_tokens,  # 4 - inspirsed by IPAdapter and Midjourney
         ).to(self.device, dtype=self.torch_dtype)
         self.FacialEncoder = FacialEncoder(self.image_encoder).to(self.device, dtype=self.torch_dtype)
 
