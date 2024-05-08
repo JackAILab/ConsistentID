@@ -8,7 +8,7 @@
 <div align="center">
   
 ## ConsistentID : Portrait Generation with Multimodal Fine-Grained Identity Preserving  [![Paper page](https://huggingface.co/datasets/huggingface/badges/resolve/main/paper-page-md-dark.svg)](https://arxiv.org/abs/2404.16771)
-[📄[Paper](https://arxiv.org/abs/2404.16771)] &emsp; [🚩[Project Page](https://ssugarwh.github.io/consistentid.github.io/)] &emsp; [[Model Card](https://huggingface.co/JackAILab/ConsistentID)] <br>
+[📄[Paper](https://arxiv.org/abs/2404.16771)] &emsp; [🚩[Project Page](https://ssugarwh.github.io/consistentid.github.io/)] &emsp; [📸[Model Card](https://huggingface.co/JackAILab/ConsistentID)] <br>
 
 [🖼[Gradio Demo](http://consistentid.natapp1.cc/)]  &emsp; [🤗[Hugging Face](https://huggingface.co/spaces/JackAILab/ConsistentID)] <br>
 
