@@ -10,9 +10,10 @@
 ## ConsistentID : Portrait Generation with Multimodal Fine-Grained Identity Preserving  [![Paper page](https://huggingface.co/datasets/huggingface/badges/resolve/main/paper-page-md-dark.svg)](https://arxiv.org/abs/2404.16771)
 [📄[Paper](https://arxiv.org/abs/2404.16771)] &emsp; [🚩[Project Page](https://ssugarwh.github.io/consistentid.github.io/)] &emsp; [🖼[Gradio Demo](http://consistentid.natapp1.cc/)] <br>
 
-[🤗[Faster Demo](https://huggingface.co/spaces/JackAILab/ConsistentID)] &emsp; <br>
+[🤗[Hugging Face](https://huggingface.co/spaces/JackAILab/ConsistentID)] &emsp; <br>
 
 </div>
+
 
 ### 🌠  **Key Features:**
 
@@ -38,8 +39,9 @@ Your star will help facilitate the process.
 - [ ] Release the SDXL model trained with more data, with enhanced resolution and generalizability.
 - [ ] Release the multi-ID input version to guide the improvement of ID diversity.
 
-## 🏷️ Abstract
-
+## 🏷️ Introduce
+- [![Huggingface ConsistentID](https://img.shields.io/static/v1?label=Demo&message=Huggingface%20Gradio&color=orange)](https://huggingface.co/spaces/JackAILab/ConsistentID)
+- 
 This is a work in the field of AIGC that introduces FaceParsing information and FaceID information into the Diffusion model. Previous work mainly focused on overall ID preservation, even though fine-grained ID preservation models such as InstantID have recently been proposed, the injection of facial ID features will be fixed. In order to achieve more flexible consistency maintenance of fine-grained IDs for facial features, a batch of 50000 multimodal fine-grained ID datasets was reconstructed for training the proposed FacialEncoder model, which can support common functions such as personalized photos, gender/age changes, and identity confusion.
 
 At the same time, we have defined a unified measurement benchmark FGIS for Fine-Grained Identity Preservice, covering several common facial personalized character scenes and characters, and constructed a fine-grained ID preservation model baseline.
@@ -101,9 +103,14 @@ python infer.py
 ```
 
 ## ⏬ Model weights
-We are hosting the model weights on **huggingface** to achieve a faster and more stable demo experience, so stay tuned ~
+The model will be automatically downloaded through the following two lines:
 
-The pre-trained model parameters of the model can now be downloaded on [Google Drive](https://drive.google.com/file/d/1jCHICryESmNkzGi8J_FlY3PjJz9gqoSI/view?usp=drive_link) or [Baidu Netdisk](https://pan.baidu.com/s/1NAVmH8S7Ls5rZc-snDk1Ng?pwd=nsh6).
+```python
+from huggingface_hub import hf_hub_download
+ConsistentID_path = hf_hub_download(repo_id="JackAILab/ConsistentID", filename="onsistentID-v1.bin", repo_type="model")
+```
+
+The pre-trained model parameters of the model can also be downloaded on [Google Drive](https://drive.google.com/file/d/1jCHICryESmNkzGi8J_FlY3PjJz9gqoSI/view?usp=drive_link) or [Baidu Netdisk](https://pan.baidu.com/s/1NAVmH8S7Ls5rZc-snDk1Ng?pwd=nsh6).
 
 
 ## Acknowledgement
