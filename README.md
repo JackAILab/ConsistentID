@@ -109,7 +109,7 @@ The model will be automatically downloaded through the following two lines:
 
 ```python
 from huggingface_hub import hf_hub_download
-ConsistentID_path = hf_hub_download(repo_id="JackAILab/ConsistentID", filename="onsistentID-v1.bin", repo_type="model")
+ConsistentID_path = hf_hub_download(repo_id="JackAILab/ConsistentID", filename="ConsistentID-v1.bin", repo_type="model")
 ```
 
 The pre-trained model parameters of the model can also be downloaded on [Google Drive](https://drive.google.com/file/d/1jCHICryESmNkzGi8J_FlY3PjJz9gqoSI/view?usp=drive_link) or [Baidu Netdisk](https://pan.baidu.com/s/1NAVmH8S7Ls5rZc-snDk1Ng?pwd=nsh6).
