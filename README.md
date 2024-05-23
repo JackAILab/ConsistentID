@@ -116,7 +116,7 @@ The pre-trained model parameters of the model can also be downloaded on [Google 
 
 
 ## Acknowledgement
-* Inspired from many excellent demos and repos, including [IPAdapter](https://github.com/tencent-ailab/IP-Adapter), [FastComposer](https://github.com/mit-han-lab/fastcomposer), [PhotoMaker](https://github.com/TencentARC/PhotoMaker). Thanks for their great works!
+* Inspired from many excellent demos and repos, including [IPAdapter](https://github.com/tencent-ailab/IP-Adapter), [FastComposer](https://github.com/mit-han-lab/fastcomposer), [PhotoMaker](https://github.com/TencentARC/PhotoMaker), [InstantID](https://github.com/InstantID/InstantID). Thanks for their great work!
 * Thanks to the open source contributions of the following work: [face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch), [LLaVA](https://github.com/haotian-liu/LLaVA), [insightface](https://github.com/deepinsight/insightface), [FFHQ](https://github.com/NVlabs/ffhq-dataset), [CelebA](https://github.com/switchablenorms/CelebAMask-HQ), [SFHQ](https://github.com/SelfishGene/SFHQ-dataset).
 * 🤗 Thanks to the huggingface gradio team [ZeroGPUs](https://github.com/huggingface) for their free GPU support!
 
