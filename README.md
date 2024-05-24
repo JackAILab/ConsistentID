@@ -10,7 +10,7 @@
 ## ConsistentID : Portrait Generation with Multimodal Fine-Grained Identity Preserving  [![Paper page](https://huggingface.co/datasets/huggingface/badges/resolve/main/paper-page-md-dark.svg)](https://arxiv.org/abs/2404.16771)
 [📄[Paper](https://arxiv.org/abs/2404.16771)] &emsp; [🚩[Project Page](https://ssugarwh.github.io/consistentid.github.io/)] &emsp; [📸[Model Card](https://huggingface.co/JackAILab/ConsistentID)] <br>
 
-[🖼[Gradio Demo](http://consistentid.natapp1.cc/)]  &emsp; [🤗[Hugging Face](https://huggingface.co/spaces/JackAILab/ConsistentID)] <br>
+[🖼[Model Card](https://huggingface.co/JackAILab/ConsistentID)]  &emsp; [🤗[Hugging Face](https://huggingface.co/spaces/JackAILab/ConsistentID)] <br>
 
 </div>
 
@@ -38,6 +38,13 @@ Your star will help facilitate the process.
 - [x] Release ConsistentID training, evaluation code, and demo!
 - [ ] Release the SDXL model trained with more data, with enhanced resolution and generalizability.
 - [ ] Release the multi-ID input version to guide the improvement of ID diversity.
+
+
+## Release
+- [2024/05/25] 🔥 Release ConsistentID for image inpainting with controlnet, refer [issue 35](https://github.com/JackAILab/ConsistentID/issues/35), the validity remains to be further checked.
+- [2024/04/28] 🔥 We release the [pre-trained checkpoints](https://huggingface.co/JackAILab/ConsistentID) and [gradio demo](https://huggingface.co/spaces/JackAILab/ConsistentID)!
+- [2024/04/25] 🔥 We release the [technical report](https://arxiv.org/abs/2404.16771).
+- [2024/04/23] 🔥 We launch the [project page](https://ssugarwh.github.io/consistentid.github.io/).
 
 
 ## 🏷️ Introduce
