@@ -40,7 +40,6 @@ Your star will help facilitate the process.
 - [ ] Release the multi-ID input version to guide the improvement of ID diversity.
 
 ## Release
-- [2024/05/25] 🔥 Release ConsistentID for image inpainting with controlnet, refer to [issue 35](https://github.com/JackAILab/ConsistentID/issues/35), the validity remains to be further checked and improved.
 - [2024/04/28] 🔥 We release the [pre-trained checkpoints](https://huggingface.co/JackAILab/ConsistentID) and [gradio demo](https://huggingface.co/spaces/JackAILab/ConsistentID)!
 - [2024/04/25] 🔥 We release the [technical report](https://arxiv.org/abs/2404.16771).
 - [2024/04/23] 🔥 We launch the [project page](https://ssugarwh.github.io/consistentid.github.io/).
