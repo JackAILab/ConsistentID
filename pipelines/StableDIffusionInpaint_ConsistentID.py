@@ -132,16 +132,14 @@ class StableDiffusionInpaintConsistentIDPipeline(StableDiffusionInpaintPipeline,
         
         # 1. Check inputs
         self.check_inputs(
-            prompt,
-            mask_image,
-            height,
-            width,
-            strength,
-            callback_steps,
-            output_type,
-            negative_prompt,
-            prompt_embeds,
-            negative_prompt_embeds,
+            prompt=prompt,
+            height=height,
+            width=width,
+            strength=strength,
+            callback_steps=callback_steps,
+            negative_prompt=negative_prompt,
+            prompt_embeds=prompt_embeds,
+            negative_prompt_embeds=negative_prompt_embeds,
         )
         if not isinstance(input_id_images, list):
             input_id_images = [input_id_images]
@@ -232,12 +230,12 @@ class StableDiffusionInpaintConsistentIDPipeline(StableDiffusionInpaintPipeline,
 
         # 7. Prepare images
         init_image = self.image_processor.preprocess(
-            input_image_file, height=height, width=width, resize_mode='default',  # crops_coords=None
+            input_image_file, height=height, width=width,  # resize_mode='default', crops_coords=None
         )
         init_image = init_image.to(dtype=torch.float32)
 
         mask = self.mask_processor.preprocess(
-            mask_image, height=height, width=width, resize_mode='default', # crops_coords=None
+            mask_image, height=height, width=width, # resize_mode='default', crops_coords=None
         )
 
         masked_image = init_image * (mask < 0.5)
