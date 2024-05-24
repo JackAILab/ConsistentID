@@ -253,12 +253,12 @@ class StableDiffusionControlNetInpaintConsistentIDPipeline(StableDiffusionContro
 
         # 7. Prepare images
         init_image = self.image_processor.preprocess(
-            image, height=height, width=width, crops_coords=None, resize_mode='default'
+            input_image_file, height=height, width=width, # crops_coords=None, resize_mode='default'
         )
         init_image = init_image.to(dtype=torch.float32)
 
         mask = self.mask_processor.preprocess(
-            mask_image, height=height, width=width, resize_mode='default', crops_coords=None
+            mask_image, height=height, width=width, # resize_mode='default', crops_coords=None
         )
 
         masked_image = init_image * (mask < 0.5)
@@ -273,8 +273,8 @@ class StableDiffusionControlNetInpaintConsistentIDPipeline(StableDiffusionContro
                 num_images_per_prompt=num_images_per_prompt,
                 device=device,
                 dtype=controlnet.dtype,
-                crops_coords=None,
-                resize_mode='default',
+                # crops_coords=None,
+                # resize_mode='default',
                 do_classifier_free_guidance=do_classifier_free_guidance,
                 guess_mode=True,
             )
