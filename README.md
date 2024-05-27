@@ -36,8 +36,9 @@
 ## 🚩 To-Do List
 Your star will help facilitate the process.
 - [x] Release ConsistentID training, evaluation code, and demo!
+- [ ] Release the multi-ID input version, inpainting with controlnet version et. al to guide the improvement of diversity.
+- [ ] Integrate with ComfUI, LCM for inference acceleration and ease of deployment.
 - [ ] Release the SDXL model trained with more data, with enhanced resolution and generalizability.
-- [ ] Release the multi-ID input version to guide the improvement of ID diversity.
 
 ## Release
 - [2024/04/28] 🔥 We release the [pre-trained checkpoints](https://huggingface.co/JackAILab/ConsistentID) and [gradio demo](https://huggingface.co/spaces/JackAILab/ConsistentID)!
