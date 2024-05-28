@@ -220,7 +220,8 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
             faceid_embeds = torch.zeros_like(torch.empty((1, 512)))
         else:
             faceid_embeds = torch.from_numpy(faces[0].normed_embedding).unsqueeze(0)
-
+            ### TODO The prior extraction of FaceID is unstable and a stronger ID prior structure can be used.
+            
         return faceid_embeds
 
     @torch.inference_mode()
