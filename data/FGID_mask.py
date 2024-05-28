@@ -129,7 +129,7 @@ if __name__ == "__main__":
 
     resize_IMG_path = "./FGID_resize" # save_path for customized resized IMGs
     parsing_mask_IM_path = "./FGID_parsing_mask" # save_path for fine_mask gray IMGs
-    parsing_color_IM_path = "./FGID_parsing_mask" # save_path for fine_mask color IMGs
+    parsing_color_IM_path = "./FGID_parsing_color" # save_path for fine_mask color IMGs
     json_save_path = "./FGID_JSON" # save_path for fine_mask information
 
     evaluate(respth=parsing_mask_IM_path, color_respth=parsing_color_IM_path, resize_dspth=resize_IMG_path, \
