@@ -41,6 +41,7 @@ Your star will help facilitate the process.
 - [ ] Release the SDXL model trained with more data, with enhanced resolution and generalizability.
 
 ## Release
+- [2024/05/28] 🔥 We release the data production instructions and [scripts](https://github.com/JackAILab/ConsistentID/blob/main/data/FGID.sh).
 - [2024/04/28] 🔥 We release the [pre-trained checkpoints](https://huggingface.co/JackAILab/ConsistentID) and [gradio demo](https://huggingface.co/spaces/JackAILab/ConsistentID)!
 - [2024/04/25] 🔥 We release the [technical report](https://arxiv.org/abs/2404.16771).
 - [2024/04/23] 🔥 We launch the [project page](https://ssugarwh.github.io/consistentid.github.io/).
