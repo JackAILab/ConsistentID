@@ -9,7 +9,7 @@ accelerate launch \
     train.py \
     --save_steps 1000 \
     --train_batch_size 2 \
-    --data_json_file "JSON_all.json" \
-    --data_root_path "resize_IMG" \
-    --faceid_root_path "all_faceID"  \
-    --parsing_root_path "parsing_mask_IMG" 
+    --data_json_file "./JSON_all.json" \
+    --data_root_path "./FGID_resize" \
+    --faceid_root_path "./FGID_faceID"  \
+    --parsing_root_path "./FGID_parsing_mask" 
