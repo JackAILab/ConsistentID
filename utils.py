@@ -92,7 +92,7 @@ class MyDataset(torch.utils.data.Dataset):
         body_image = self.transform(body_raw_image.convert("RGB"))
         body_clip_image = self.clip_image_processor(images=body_raw_image, return_tensors="pt").pixel_values 
         multi_image = torch.cat([image, body_image], dim=0)
-        multi_clip_image = torch.cat([clip_image, body_clip_image], dim=1)
+        multi_clip_image = torch.cat([clip_image, body_clip_image], dim=1) ### TODO multiID
 
         text_face, key_parsing_mask_list = process_text_with_markers(text_origin, key_parsing_mask_list)
         text = "Caption:" + extract_first_sentence(item["vqa_llva"]) + " Detail:" + text_face + item["vqa_llva"][len(extract_first_sentence(item["vqa_llva"])):-1]
