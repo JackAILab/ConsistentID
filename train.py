@@ -136,7 +136,7 @@ def main():
     weight_dtype = torch.float32
     if accelerator.mixed_precision == "fp16":
         weight_dtype = torch.float16
-    elif accelerator.mixed_precision == "fp32":
+    elif accelerator.mixed_precision == "fp32": ### TODO
         weight_dtype = torch.float32
     elif accelerator.mixed_precision == "bf16":
         weight_dtype = torch.bfloat16
@@ -294,20 +294,4 @@ def main():
                      
 if __name__ == "__main__":
     main()    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
