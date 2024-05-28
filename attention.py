@@ -3,7 +3,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 from diffusers.models.lora import LoRALinearLayer
 from functions import AttentionMLP
-
+from diffusers.utils.import_utils import is_xformers_available
+if is_xformers_available():
+    import xformers
 
 class FuseModule(nn.Module):
     def __init__(self, embed_dim):
@@ -147,8 +149,13 @@ class Consistent_AttProcessor(nn.Module):
         key = attn.head_to_batch_dim(key)
         value = attn.head_to_batch_dim(value)
 
-        attention_probs = attn.get_attention_scores(query, key, attention_mask)
-        hidden_states = torch.bmm(attention_probs, value)
+        if is_xformers_available():
+            ### xformers
+            hidden_states = xformers.ops.memory_efficient_attention(query, key, value, attn_bias=attention_mask)
+            hidden_states = hidden_states.to(query.dtype)
+        else:
+            attention_probs = attn.get_attention_scores(query, key, attention_mask)
+            hidden_states = torch.bmm(attention_probs, value)
         hidden_states = attn.batch_to_head_dim(hidden_states)
 
         # linear proj
