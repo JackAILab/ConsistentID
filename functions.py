@@ -20,7 +20,7 @@ def extract_first_sentence(text):
         return text.strip()
     
 import re
-def remove_duplicate_keywords(text, keywords):
+def remove_duplicate_keywords(text, keywords): ### TODO To be optimized
     keyword_counts = {}
 
     words = re.findall(r'\b\w+\b|[.,;!?]', text)
