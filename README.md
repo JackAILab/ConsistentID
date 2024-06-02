@@ -112,7 +112,7 @@ Ensure that the workspace is the root directory of the project.
 python infer.py
 ```
 
-### Infer Inpaint & Inpaint Contronet
+### Infer Inpaint & Inpaint Controlnet
 ```setup
 python -m demo.inpaint_demo
 python -m demo.controlnet_demo
