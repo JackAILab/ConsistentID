@@ -99,6 +99,12 @@ class MyDataset(torch.utils.data.Dataset):
         if len(self.tokenizer(text,max_length=self.tokenizer.model_max_length, padding="max_length",truncation=False,return_tensors="pt").input_ids[0])!=77:
             text = "Detail:" + text_face + " Caption:" + item["vqa_llva"]
 
+        if len(text_face)>max_text_length:
+            text = item["vqa_llva"] # Prevent Facial text from being too long and causing errors.
+            text_path = "./long_caption_log.txt"
+            with open(text_path, 'a') as f:
+                f.write(str(text_face) + '\n') # A small portion of the text descriptions obtained through llava are too long. 
+        
         drop_image_embed = 0
 
         prob = random.random()
