@@ -175,8 +175,7 @@ def main():
 
     unet.set_attn_processor(attn_procs) 
     adapter_modules = torch.nn.ModuleList(unet.attn_processors.values()) 
-    
-    adapter_modules.requires_grad_(False)
+
     consistentID_model = ConsistentID(unet, image_proj_model, adapter_modules, facial_encoder)
 
     optimizer_cls = torch.optim.AdamW
