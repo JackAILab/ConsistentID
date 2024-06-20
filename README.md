@@ -105,7 +105,7 @@ bash train_bash.sh
 ```
 
 ## 🧪 Usage
-Ensure that the workspace is the root directory of the project.
+Ensure that the workspace is the root directory of the project. Then, run [convert_weights.py](https://github.com/JackAILab/ConsistentID/blob/main/evaluation/convert_weights.py) to save the weights efficiently.
 
 ### Infer
 ```setup
