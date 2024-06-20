@@ -204,10 +204,6 @@ class Consistent_IPAttProcessor(nn.Module):
         self.to_k_ip = nn.Linear(cross_attention_dim or hidden_size, hidden_size, bias=False)
         self.to_v_ip = nn.Linear(cross_attention_dim or hidden_size, hidden_size, bias=False)
 
-        for module in [self.to_q_lora, self.to_k_lora, self.to_v_lora, self.to_out_lora, self.to_k_ip, self.to_v_ip]:
-            for param in module.parameters():
-                param.requires_grad = False
-
     def __call__(
         self, 
         attn,
