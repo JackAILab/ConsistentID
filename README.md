@@ -146,8 +146,6 @@ If you have any questions, please feel free to email us at JiehuiHuang1107@163.c
 
 ![WeChatGroup_ConsistentID](https://github.com/user-attachments/assets/5c9a4d9f-81d8-4465-81f3-2bcf5ef52185)
 
-![Teaser figure](scripts/group.jpg)
-
 ## Citation
 If you found this code helpful, please consider citing:
 ~~~
