@@ -280,7 +280,7 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
         # face_caption = eval_model(args, self.llva_tokenizer, self.llva_model, self.llva_image_processor)
 
         ### Use built-in template
-        face_caption = "The person has one nose, two eyes, two ears, and a mouth."
+        face_caption = "The person has one face, one nose, two eyes, two ears, and one mouth."
 
         return face_caption
 
