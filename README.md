@@ -145,7 +145,7 @@ As energy is a priority, we are upgrading the current ConsistentID model as much
 If you have any questions, please feel free to email us at JiehuiHuang1107@163.com.
 Use [WeChat](https://www.wechatapp.com/), and scan the following QR code to join the group chat.
 
-![WeChatGroup_ConsistentID](https://github.com/user-attachments/assets/5c9a4d9f-81d8-4465-81f3-2bcf5ef52185)
+![WeChatGroup_ConsistentID](https://github.com/user-attachments/assets/3f3c6d61-0cf5-457b-93ed-ccd233e593bd)
 
 ## Citation
 If you found this code helpful, please consider citing:
