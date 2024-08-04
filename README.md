@@ -139,6 +139,15 @@ The pre-trained model parameters of the model can also be downloaded on [Google 
 ## Disclaimer
 This project strives to impact the domain of AI-driven image generation positively. Users are granted the freedom to create images using this tool, but they are expected to comply with local laws and utilize it responsibly. The developers do not assume any responsibility for potential misuse by users.
 
+## 👀 Contact Us
+If you have any questions, please feel free to email us at JiehuiHuang1107@163.com.
+1. Use [QQ](https://im.qq.com/index/) to search group-2 `54095000124` or [Wechat](https://www.wechatapp.com/) Scan to join.
+2. If the WeChat QR code has expired, or the group is full, you can first add the person's WeChat (REmbodied) , and then apply to be added to the group.
+
+![WeChatGroup_ConsistentID](https://github.com/user-attachments/assets/5c9a4d9f-81d8-4465-81f3-2bcf5ef52185)
+
+![Teaser figure](scripts/group.jpg)
+
 ## Citation
 If you found this code helpful, please consider citing:
 ~~~
