@@ -139,13 +139,6 @@ The pre-trained model parameters of the model can also be downloaded on [Google 
 ## Disclaimer
 This project strives to impact the domain of AI-driven image generation positively. Users are granted the freedom to create images using this tool, but they are expected to comply with local laws and utilize it responsibly. The developers do not assume any responsibility for potential misuse by users.
 
-## Contact Us
-As energy is a priority, we are upgrading the current ConsistentID model as much as possible and combining this approach with other multi-ID preservation solutions. 
-
-If you have any questions, please feel free to email us at JiehuiHuang1107@163.com.
-Use [WeChat](https://www.wechatapp.com/), and scan the following QR code to join the group chat.
-
-![WeChatGroup_ConsistentID](https://github.com/user-attachments/assets/3f3c6d61-0cf5-457b-93ed-ccd233e593bd)
 
 ## Citation
 If you found this code helpful, please consider citing:
