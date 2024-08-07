@@ -14,6 +14,7 @@
 
 </div>
 
+More extended codes and data will be released **after acceptance of our paper**, including multi-ID input version, SDXL version, and combination version with other models from the community.
 
 ### 🌠  **Key Features:**
 
@@ -34,7 +35,7 @@
 
 
 ## 🚩 To-Do List
-Your star will help facilitate the process.
+Your star will help facilitate the process. The extended code and data will be published upon acceptance of our paper.
 - [x] Release ConsistentID training, evaluation code, and demo!
 - [ ] Release the multi-ID input version, inpainting with controlnet version et. al to guide the improvement of diversity.
 - [ ] Integrate with ComfUI, LCM for inference acceleration and ease of deployment.
