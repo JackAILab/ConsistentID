@@ -41,6 +41,7 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
         trigger_word_ID: str = '<|image|>',
         trigger_word_facial: str = '<|facial|>',
         image_encoder_path: str = 'laion/CLIP-ViT-H-14-laion2B-s32B-b79K',  
+        bise_net_cp: str = 'JackAILab/ConsistentID/face_parsing.pth', 
         torch_dtype = torch.float16,
         num_tokens = 4,
         lora_rank= 128,
@@ -65,7 +66,7 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
         ### BiSeNet
         self.bise_net = BiSeNet(n_classes = 19)
         self.bise_net.cuda()
-        self.bise_net_cp='JackAILab/ConsistentID/face_parsing.pth' 
+        self.bise_net_cp= bise_net_cp
         self.bise_net.load_state_dict(torch.load(self.bise_net_cp))
         self.bise_net.eval()
         # Colors for all 20 parts

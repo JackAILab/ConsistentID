@@ -10,18 +10,21 @@ import sys
 device = "cuda"
 base_model_path = "SG161222/Realistic_Vision_V6.0_B1_noVAE"
 consistentID_path = "JackAILab/ConsistentID/ConsistentID-v1.bin" 
+image_encoder_path = "laion/CLIP-ViT-H-14-laion2B-s32B-b79K"
+bise_net_cp = "/mnt/data/sysu/Users/huangjiehui/pretrained_model/ConsistentID/face_parsing.pth" ### Download this model manually and specify the path
 
 ### Load base model
 pipe = ConsistentIDStableDiffusionPipeline.from_pretrained(
-    base_model_path, 
-    torch_dtype=torch.float16, 
-    use_safetensors=True, 
+    base_model_path,
+    torch_dtype=torch.float16,
     variant="fp16"
 ).to(device)
 
 ### Load consistentID_model checkpoint
 pipe.load_ConsistentID_model(
     os.path.dirname(consistentID_path),
+    image_encoder_path=image_encoder_path,
+    bise_net_cp=bise_net_cp,
     subfolder="",
     weight_name=os.path.basename(consistentID_path),
     trigger_word="img",
