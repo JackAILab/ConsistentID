@@ -41,7 +41,7 @@ Your star will help facilitate the process. The extended code and data will be p
 - [ ] Release the multi-ID input version, inpainting with controlnet version et. al to guide the improvement of diversity.
 
 ## Release
-- [2024/12/27] 🔥 We update the ConsistentIDv1 SDXL model and pretrained parameters.
+- [2024/12/27] 🔥 We update the ConsistentIDv1 [SDXL model](https://huggingface.co/JackAILab/ConsistentID) and pretrained parameters.
 - [2024/05/28] 🔥 We release the data production instructions and [scripts](https://github.com/JackAILab/ConsistentID/blob/main/data/FGID.sh).
 - [2024/04/28] 🔥 We release the [pre-trained checkpoints](https://huggingface.co/JackAILab/ConsistentID) and [gradio demo](https://huggingface.co/spaces/JackAILab/ConsistentID)!
 - [2024/04/25] 🔥 We release the [technical report](https://arxiv.org/abs/2404.16771).
