@@ -14,8 +14,6 @@
 
 </div>
 
-More extended codes and data will be released **after acceptance of our paper**, including multi-ID input version, SDXL version, and combination version with other models from the community.
-
 ### 🌠  **Key Features:**
 
 1. Portrait generation with extremely high **ID fidelity**, without sacrificing diversity, text controllability.
