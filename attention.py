@@ -70,10 +70,10 @@ class MLP(nn.Module):
         return x
 
 class FacialEncoder(nn.Module):
-    def __init__(self,image_CLIPModel_encoder=None):
+    def __init__(self,image_CLIPModel_encoder=None,embedding_dim=1280, output_dim=768, embed_dim=768):
         super().__init__()
-        self.visual_projection = AttentionMLP()
-        self.fuse_module = FuseModule(768)
+        self.visual_projection = AttentionMLP(embedding_dim=embedding_dim, output_dim=output_dim)
+        self.fuse_module = FuseModule(embed_dim=embed_dim)
 
     def forward(self, prompt_embeds, multi_image_embeds, class_tokens_mask, valid_id_mask):
         

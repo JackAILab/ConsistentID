@@ -10,17 +10,28 @@ from insightface.app import FaceAnalysis
 from safetensors import safe_open
 from huggingface_hub.utils import validate_hf_hub_args
 from transformers import CLIPImageProcessor, CLIPVisionModelWithProjection
-from diffusers.pipelines.stable_diffusion import StableDiffusionPipelineOutput
-from diffusers.pipelines.stable_diffusion import StableDiffusionPipeline
 from diffusers.utils import _get_model_file
 from functions import process_text_with_markers, masks_for_unique_values, fetch_mask_raw_image, tokenize_and_mask_noun_phrases_ends, prepare_image_token_idx
 from functions import ProjPlusModel, masks_for_unique_values
 from attention import Consistent_IPAttProcessor, Consistent_AttProcessor, FacialEncoder
-
 ### Model can be imported from https://github.com/zllrunning/face-parsing.PyTorch?tab=readme-ov-file
 ### We use the ckpt of 79999_iter.pth: https://drive.google.com/open?id=154JgKpzCPW82qINcVieuPH3fZ2e0P812
 ### Thanks for the open source of face-parsing model.
-from models.BiSeNet.model import BiSeNet
+from models.BiSeNet.model import BiSeNet # resnet tensorflow
+import pdb
+######################################
+########## add for sdxl
+######################################
+from diffusers import StableDiffusionXLPipeline
+from diffusers.pipelines.stable_diffusion_xl import StableDiffusionXLPipelineOutput
+######################################
+########## add for llava
+######################################
+# import sys
+# sys.path.append("./Llava1.5/LLaVA")
+# from llava.model.builder import load_pretrained_model
+# from llava.mm_utils import get_model_name_from_path
+# from llava.eval.run_llava import eval_model
 
 PipelineImageInput = Union[
     PIL.Image.Image,
@@ -29,8 +40,8 @@ PipelineImageInput = Union[
     List[torch.FloatTensor],
 ]
 
-### Download the pretrained model from huggingface and put it locally, then place the model in a local directory and specify the directory location.
-class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
+
+class ConsistentIDStableDiffusionXLPipeline(StableDiffusionXLPipeline):
     
     @validate_hf_hub_args
     def load_ConsistentID_model(
@@ -40,8 +51,8 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
         subfolder: str = '',
         trigger_word_ID: str = '<|image|>',
         trigger_word_facial: str = '<|facial|>',
-        image_encoder_path: str = 'laion/CLIP-ViT-H-14-laion2B-s32B-b79K',  
-        bise_net_cp: str = 'JackAILab/ConsistentID/face_parsing.pth', 
+        image_encoder_path: str = 'laion/CLIP-ViT-H-14-laion2B-s32B-b79K',   # Import CLIP pretrained model
+        bise_net_cp: str = 'JackAILab/ConsistentID/face_parsing.pth',
         torch_dtype = torch.float16,
         num_tokens = 4,
         lora_rank= 128,
@@ -60,14 +71,14 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
         self.crop_size = 512
 
         # FaceID
-        self.app = FaceAnalysis(name="buffalo_l", providers=['CUDAExecutionProvider', 'CPUExecutionProvider'])
-        self.app.prepare(ctx_id=0, det_size=(640, 640))
+        self.app = FaceAnalysis(name="buffalo_l", providers=['CUDAExecutionProvider', 'CPUExecutionProvider']) ### root="/root/.insightface/models/buffalo_l"
+        self.app.prepare(ctx_id=0, det_size=(512, 512)) ### (640, 640)
 
         ### BiSeNet
         self.bise_net = BiSeNet(n_classes = 19)
         self.bise_net.cuda()
-        self.bise_net_cp= bise_net_cp
-        self.bise_net.load_state_dict(torch.load(self.bise_net_cp))
+        self.bise_net_cp= bise_net_cp # Import BiSeNet model
+        self.bise_net.load_state_dict(torch.load(self.bise_net_cp)) # , map_location="cpu"
         self.bise_net.eval()
         # Colors for all 20 parts
         self.part_colors = [[255, 0, 0], [255, 85, 0], [255, 170, 0],
@@ -80,19 +91,12 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
                     [255, 0, 255], [255, 85, 255], [255, 170, 255],
                     [0, 255, 255], [85, 255, 255], [170, 255, 255]]
         
-        ### LLVA (Optional)
-        self.llva_model_path = "liuhaotian/llava-v1.5-13b" # TODO 
-        # IMPORTANT! Download the openai/clip-vit-large-patch14-336 model and specify the model path in config.json ("mm_vision_tower": "openai/clip-vit-large-patch14-336").
+        ### LLVA Optional
+        self.llva_model_path = "" #TODO import llava weights
         self.llva_prompt = "Describe this person's facial features for me, including face, ears, eyes, nose, and mouth." 
         self.llva_tokenizer, self.llva_model, self.llva_image_processor, self.llva_context_len = None,None,None,None #load_pretrained_model(self.llva_model_path)
 
-        self.image_proj_model = ProjPlusModel(
-            cross_attention_dim=self.unet.config.cross_attention_dim, 
-            id_embeddings_dim=512,
-            clip_embeddings_dim=self.image_encoder.config.hidden_size, 
-            num_tokens=self.num_tokens,  # 4 - inspirsed by IPAdapter and Midjourney
-        ).to(self.device, dtype=self.torch_dtype)
-        self.FacialEncoder = FacialEncoder().to(self.device, dtype=self.torch_dtype)
+        self.FacialEncoder = FacialEncoder(self.image_encoder, embedding_dim=1280, output_dim=2048, embed_dim=2048).to(self.device, dtype=self.torch_dtype)
 
         # Load the main state dict first.
         cache_dir = kwargs.pop("cache_dir", None)
@@ -123,31 +127,53 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
                 user_agent=user_agent,
             )
             if weight_name.endswith(".safetensors"):
-                state_dict = {"id_encoder": {}, "lora_weights": {}}
+                state_dict = {"image_proj_model": {}, "adapter_modules": {}, "FacialEncoder": {}}
                 with safe_open(model_file, framework="pt", device="cpu") as f:
                     for key in f.keys():
-                        if key.startswith("id_encoder."):
-                            state_dict["id_encoder"][key.replace("id_encoder.", "")] = f.get_tensor(key)
-                        elif key.startswith("lora_weights."):
-                            state_dict["lora_weights"][key.replace("lora_weights.", "")] = f.get_tensor(key)
+                        if key.startswith("unet"):
+                            pass
+                        elif key.startswith("image_proj_model"):
+                            state_dict["image_proj_model"][key.replace("image_proj_model.", "")] = f.get_tensor(key)
+                        elif key.startswith("adapter_modules"):   
+                            state_dict["adapter_modules"][key.replace("adapter_modules.", "")] = f.get_tensor(key)
+                        elif key.startswith("FacialEncoder"):
+                            state_dict["FacialEncoder"][key.replace("FacialEncoder.", "")] = f.get_tensor(key)    
             else:
-                state_dict = torch.load(model_file, map_location="cpu")
+                state_dict = torch.load(model_file, map_location="cuda")
         else:
             state_dict = pretrained_model_name_or_path_or_dict
-    
+        
+
         self.trigger_word_ID = trigger_word_ID
         self.trigger_word_facial = trigger_word_facial
 
-        self.FacialEncoder.load_state_dict(state_dict["FacialEncoder"], strict=True)
-        self.image_proj_model.load_state_dict(state_dict["image_proj"], strict=True)
+        self.image_proj_model = ProjPlusModel(
+            cross_attention_dim=self.unet.config.cross_attention_dim, 
+            id_embeddings_dim=512,
+            clip_embeddings_dim=self.image_encoder.config.hidden_size, 
+            num_tokens=self.num_tokens,  # 4
+        ).to(self.device, dtype=self.torch_dtype)
+        self.image_proj_model.load_state_dict(state_dict["image_proj_model"], strict=True)
+
         ip_layers = torch.nn.ModuleList(self.unet.attn_processors.values())
         ip_layers.load_state_dict(state_dict["adapter_modules"], strict=True)
+        self.FacialEncoder.load_state_dict(state_dict["FacialEncoder"], strict=True)
         print(f"Successfully loaded weights from checkpoint")
 
         # Add trigger word token
         if self.tokenizer is not None: 
             self.tokenizer.add_tokens([self.trigger_word_ID], special_tokens=True)
             self.tokenizer.add_tokens([self.trigger_word_facial], special_tokens=True)
+
+        ######################################
+        ########## add for sdxl
+        ######################################
+        ### (1) load lora into models
+        # print(f"Loading ConsistentID components lora_weights from [{pretrained_model_name_or_path_or_dict}]")
+        # self.load_lora_weights(state_dict["lora_weights"], adapter_name="photomaker")
+
+        ### (2) Add trigger word token for tokenizer_2
+        self.tokenizer_2.add_tokens([self.trigger_word_ID], special_tokens=True)
 
     def set_ip_adapter(self):
         unet = self.unet
@@ -191,11 +217,11 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
 
         # uncondition 
         uncond_facial_prompt_embeds = self.FacialEncoder(negative_prompt_embeds, uncond_multi_facial_embeds, facial_token_masks, valid_facial_token_idx_mask)  
-
-        return facial_prompt_embeds, uncond_facial_prompt_embeds        
+        
+        return facial_prompt_embeds, uncond_facial_prompt_embeds    
 
     @torch.inference_mode()   
-    def get_image_embeds(self, faceid_embeds, face_image, s_scale, shortcut=False):
+    def get_image_embeds(self, faceid_embeds, face_image, s_scale=1.0, shortcut=False):
 
         clip_image = self.clip_image_processor(images=face_image, return_tensors="pt").pixel_values
         clip_image = clip_image.to(self.device, dtype=self.torch_dtype)
@@ -205,7 +231,7 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
         faceid_embeds = faceid_embeds.to(self.device, dtype=self.torch_dtype)
         image_prompt_tokens = self.image_proj_model(faceid_embeds, clip_image_embeds, shortcut=shortcut, scale=s_scale)
         uncond_image_prompt_embeds = self.image_proj_model(torch.zeros_like(faceid_embeds), uncond_clip_image_embeds, shortcut=shortcut, scale=s_scale)
-        
+
         return image_prompt_tokens, uncond_image_prompt_embeds
 
     def set_scale(self, scale):
@@ -214,15 +240,15 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
                 attn_processor.scale = scale
 
     @torch.inference_mode()
-    def get_prepare_faceid(self, face_image):
-        faceid_image = np.array(face_image)
-        faces = self.app.get(faceid_image)
-        if faces==[]:
+    def get_prepare_faceid(self, input_image_path=None):
+        faceid_image = cv2.imread(input_image_path)
+        face_info = self.app.get(faceid_image)
+        if face_info==[]:
             faceid_embeds = torch.zeros_like(torch.empty((1, 512)))
         else:
-            faceid_embeds = torch.from_numpy(faces[0].normed_embedding).unsqueeze(0)
-            ### TODO The prior extraction of FaceID is unstable and a stronger ID prior structure can be used.
-            
+            faceid_embeds = torch.from_numpy(face_info[0].normed_embedding).unsqueeze(0)
+
+        # print(f"faceid_embeds is : {faceid_embeds}")
         return faceid_embeds
 
     @torch.inference_mode()
@@ -235,7 +261,8 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
         to_pil = transforms.ToPILImage()
 
         with torch.no_grad():
-            image = raw_image_refer.resize((512, 512), Image.BILINEAR)
+            ### change sdxl
+            image = raw_image_refer.resize((1280, 1280), Image.BILINEAR)
             image_resize_PIL = image
             img = to_tensor(image)
             img = torch.unsqueeze(img, 0)
@@ -281,7 +308,7 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
         # face_caption = eval_model(args, self.llva_tokenizer, self.llva_model, self.llva_image_processor)
 
         ### Use built-in template
-        face_caption = "The person has one face, one nose, two eyes, two ears, and one mouth."
+        face_caption = "The person has one face, one nose, two eyes, two ears, and a mouth."
 
         return face_caption
 
@@ -321,18 +348,19 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
     ):
         device = device or self._execution_device
 
+        # pdb.set_trace()
         face_caption_align, key_parsing_mask_list_align = process_text_with_markers(face_caption, key_parsing_mask_list) 
         
-        prompt_face = prompt + "Detail:" + face_caption_align
+        prompt_face = prompt + "; Detail:" + face_caption_align
 
         max_text_length=330      
         if len(self.tokenizer(prompt_face, max_length=self.tokenizer.model_max_length, padding="max_length",truncation=False,return_tensors="pt").input_ids[0])!=77:
-            prompt_face = "Detail:" + face_caption_align + " Caption:" + prompt
+            prompt_face = "; Detail:" + face_caption_align + " Caption:" + prompt
         
         if len(face_caption)>max_text_length:
             prompt_face = prompt
             face_caption_align =  ""
-  
+
         prompt_text_only = prompt_face.replace("<|facial|>", "").replace("<|image|>", "")
         tokenizer = self.tokenizer
         facial_token_id = tokenizer.convert_tokens_to_ids(facial_token)
@@ -344,7 +372,19 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
         image_token_idx, image_token_idx_mask, facial_token_idx, facial_token_idx_mask = prepare_image_token_idx(
             image_token_mask, facial_token_mask, num_id_images, max_num_facials )
 
-        return prompt_text_only, clean_input_id, key_parsing_mask_list_align, facial_token_mask, facial_token_idx, facial_token_idx_mask
+        ######################################
+        ########## add for sdxl
+        ######################################
+        tokenizer_2 = self.tokenizer_2
+        facial_token_id2 = tokenizer.convert_tokens_to_ids(facial_token)
+        image_token_id2 = None
+        clean_input_id2, image_token_mask2, facial_token_mask2 = tokenize_and_mask_noun_phrases_ends(
+        prompt_face, image_token_id2, facial_token_id2, tokenizer_2) 
+
+        image_token_idx2, image_token_idx_mask2, facial_token_idx2, facial_token_idx_mask2 = prepare_image_token_idx(
+            image_token_mask2, facial_token_mask2, num_id_images, max_num_facials )
+
+        return prompt_text_only, clean_input_id, clean_input_id2, key_parsing_mask_list_align, facial_token_mask, facial_token_idx, facial_token_idx_mask
 
     @torch.inference_mode()
     def get_prepare_clip_image(self, input_image_file, key_parsing_mask_list, image_size=512, max_num_facials=5, change_facial=True):
@@ -379,10 +419,11 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
     def __call__(
         self,
         prompt: Union[str, List[str]] = None,
+        face_caption: Union[str, List[str]] = None,
         height: Optional[int] = None,
         width: Optional[int] = None,
         num_inference_steps: int = 50,
-        guidance_scale: float = 5.0,
+        guidance_scale: float = 7.5,
         negative_prompt: Optional[Union[str, List[str]]] = None,
         num_images_per_prompt: Optional[int] = 1,
         eta: float = 0.0,
@@ -398,9 +439,17 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
         callback: Optional[Callable[[int, int, torch.FloatTensor], None]] = None,
         callback_steps: int = 1,
         input_id_images: PipelineImageInput = None,
+        input_image_path: PipelineImageInput = None,
         start_merge_step: int = 0,
         class_tokens_mask: Optional[torch.LongTensor] = None,
         prompt_embeds_text_only: Optional[torch.FloatTensor] = None,
+        ### add for sdxl
+        negative_prompt_2: Optional[Union[str, List[str]]] = None,   
+        prompt_2: Optional[Union[str, List[str]]] = None,     
+        crops_coords_top_left: Tuple[int, int] = (0, 0),
+        negative_pooled_prompt_embeds: Optional[torch.FloatTensor] = None,        
+        pooled_prompt_embeds_text_only: Optional[torch.FloatTensor] = None,   
+        guidance_rescale: float = 7.5             
     ):
         # 0. Default height and width to unet
         height = height or self.unet.config.sample_size * self.vae_scale_factor
@@ -410,15 +459,16 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
         target_size = target_size or (height, width)
 
         # 1. Check inputs. Raise error if not correct
-        self.check_inputs(
-            prompt,
-            height,
-            width,
-            callback_steps,
-            negative_prompt,
-            prompt_embeds,
-            negative_prompt_embeds,
-        )
+        # self.check_inputs(
+        #     prompt,
+        #     height,
+        #     width,
+        #     callback_steps,
+        #     negative_prompt,
+        #     prompt_embeds,
+        #     negative_prompt_embeds,
+        # )
+
         if not isinstance(input_id_images, list):
             input_id_images = [input_id_images]
 
@@ -434,8 +484,8 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
         do_classifier_free_guidance = guidance_scale >= 1.0
         input_image_file = input_id_images[0]
 
-        faceid_embeds = self.get_prepare_faceid(face_image=input_image_file)
-        face_caption = self.get_prepare_llva_caption(input_image_file)
+        faceid_embeds = self.get_prepare_faceid(input_image_path=input_image_path)
+        face_caption = self.get_prepare_llva_caption(input_image_file=input_image_file)
         key_parsing_mask_list, vis_parsing_anno_color = self.get_prepare_facemask(input_image_file)
 
         assert do_classifier_free_guidance
@@ -446,6 +496,7 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
         (
             prompt_text_only,
             clean_input_id,
+            clean_input_id2, ### add for sdxl
             key_parsing_mask_list_align,
             facial_token_mask,
             facial_token_idx,
@@ -453,58 +504,87 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
         ) = self.encode_prompt_with_trigger_word(
             prompt = prompt,
             face_caption = face_caption,
-            # prompt_2=None,  
             key_parsing_mask_list=key_parsing_mask_list,
             device=device,
             max_num_facials = 5,
             num_id_images= num_id_images,
-            # prompt_embeds= None,
-            # pooled_prompt_embeds= None,
-            # class_tokens_mask= None,
         )
 
         # 4. Encode input prompt without the trigger word for delayed conditioning
-        encoder_hidden_states = self.text_encoder(clean_input_id.to(device))[0] 
+        text_embeds = self.text_encoder(clean_input_id.to(device), output_hidden_states=True).hidden_states[-2]
+        ######################################
+        ########## add for sdxl : add pooled_text_embeds
+        ######################################
+        ### (4-1)
+        encoder_output_2 = self.text_encoder_2(clean_input_id2.to(device), output_hidden_states=True)
+        pooled_text_embeds = encoder_output_2[0]
+        text_embeds_2 = encoder_output_2.hidden_states[-2]
+        
+        ### (4-2)
+        encoder_hidden_states = torch.concat([text_embeds, text_embeds_2], dim=-1) # concat  
 
-        prompt_embeds = self._encode_prompt(
-            prompt_text_only,
+        ### (4-3)
+        if self.text_encoder_2 is None:
+            text_encoder_projection_dim = int(pooled_text_embeds.shape[-1])
+        else:
+            text_encoder_projection_dim = self.text_encoder_2.config.projection_dim
+        add_time_ids = self._get_add_time_ids(
+            original_size,
+            crops_coords_top_left,
+            target_size,
+            dtype=self.torch_dtype,
+            text_encoder_projection_dim=text_encoder_projection_dim,
+        )
+        add_time_ids = torch.cat([add_time_ids, add_time_ids], dim=0) ### add_time_ids.Size([2, 6])
+        add_time_ids = add_time_ids.to(device).repeat(batch_size * num_images_per_prompt, 1)
+        
+        ######################################
+        ########## add for sdxl : add pooled_prompt_embeds
+        ######################################
+        text_encoder_lora_scale = (
+            cross_attention_kwargs.get("scale", None) if cross_attention_kwargs is not None else None
+        )        
+        (
+            prompt_embeds,
+            negative_prompt_embeds, 
+            pooled_prompt_embeds_text_only,
+            negative_pooled_prompt_embeds,  
+        )= self.encode_prompt(
+            prompt=prompt,
+            prompt_2=prompt_2,
             device=device,
             num_images_per_prompt=num_images_per_prompt,
-            do_classifier_free_guidance=True,
+            do_classifier_free_guidance=do_classifier_free_guidance,
             negative_prompt=negative_prompt,
+            negative_prompt_2=negative_prompt_2,
+            prompt_embeds=prompt_embeds_text_only,
+            negative_prompt_embeds=negative_prompt_embeds,
+            pooled_prompt_embeds=pooled_prompt_embeds_text_only,
+            negative_pooled_prompt_embeds=negative_pooled_prompt_embeds, 
+            lora_scale=text_encoder_lora_scale,       
         )
-        negative_encoder_hidden_states_text_only = prompt_embeds[0:num_images_per_prompt]
-        encoder_hidden_states_text_only = prompt_embeds[num_images_per_prompt:]
 
         # 5. Prepare the input ID images
-        prompt_tokens_faceid, uncond_prompt_tokens_faceid = self.get_image_embeds(faceid_embeds, face_image=input_image_file, s_scale=1.0, shortcut=False)
+        prompt_tokens_faceid, uncond_prompt_tokens_faceid = self.get_image_embeds(faceid_embeds, face_image=input_image_file, s_scale=1.0, shortcut=True)
 
-        facial_clip_image, facial_mask = self.get_prepare_clip_image(input_image_file, key_parsing_mask_list_align, image_size=512, max_num_facials=5)
+        facial_clip_image, facial_mask = self.get_prepare_clip_image(input_image_file, key_parsing_mask_list_align, image_size=1280, max_num_facials=5)
         facial_clip_images = facial_clip_image.unsqueeze(0).to(device, dtype=self.torch_dtype)
         facial_token_mask = facial_token_mask.to(device)
         facial_token_idx_mask = facial_token_idx_mask.to(device)
-        negative_encoder_hidden_states = negative_encoder_hidden_states_text_only
 
         cross_attention_kwargs = {}
 
         # 6. Get the update text embedding
-        prompt_embeds_facial, uncond_prompt_embeds_facial = self.get_facial_embeds(encoder_hidden_states, negative_encoder_hidden_states, \
+        prompt_embeds_facial, uncond_prompt_embeds_facial = self.get_facial_embeds(encoder_hidden_states, negative_prompt_embeds, \
                                                             facial_clip_images, facial_token_mask, facial_token_idx_mask)
 
-        prompt_embeds = torch.cat([prompt_embeds_facial, prompt_tokens_faceid], dim=1)
-        negative_prompt_embeds = torch.cat([uncond_prompt_embeds_facial, uncond_prompt_tokens_faceid], dim=1)
+        ########## text_facial embeds
+        prompt_embeds_facial = torch.cat([prompt_embeds_facial, prompt_tokens_faceid], dim=1)
+        negative_prompt_embeds_facial = torch.cat([uncond_prompt_embeds_facial, uncond_prompt_tokens_faceid], dim=1)
 
-        prompt_embeds = self._encode_prompt(
-            prompt,
-            device,
-            num_images_per_prompt,
-            do_classifier_free_guidance,
-            negative_prompt,
-            prompt_embeds=prompt_embeds,
-            negative_prompt_embeds=negative_prompt_embeds,
-        )        
-        prompt_embeds_text_only = torch.cat([encoder_hidden_states_text_only, prompt_tokens_faceid], dim=1)
-        prompt_embeds = torch.cat([prompt_embeds, prompt_embeds_text_only], dim=0)
+        ########## text_only embeds
+        prompt_embeds_text_only = torch.cat([prompt_embeds, prompt_tokens_faceid], dim=1)
+        negative_prompt_embeds_text_only = torch.cat([negative_prompt_embeds, uncond_prompt_tokens_faceid], dim=1)
 
         # 7. Prepare timesteps
         self.scheduler.set_timesteps(num_inference_steps, device=device)
@@ -524,11 +604,6 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
         )
 
         extra_step_kwargs = self.prepare_extra_step_kwargs(generator, eta)
-        (
-            null_prompt_embeds,
-            augmented_prompt_embeds,
-            text_prompt_embeds,
-        ) = prompt_embeds.chunk(3)
 
         # 9. Denoising loop
         num_warmup_steps = len(timesteps) - num_inference_steps * self.scheduler.order
@@ -539,14 +614,21 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
                 )
                 latent_model_input = self.scheduler.scale_model_input(latent_model_input, t)
                 
+                ######################################
+                ########## add for sdxl : add unet_added_cond_kwargs
+                ######################################                  
                 if i <= start_merge_step:
                     current_prompt_embeds = torch.cat(
-                        [null_prompt_embeds, text_prompt_embeds], dim=0
+                        [negative_prompt_embeds_text_only, prompt_embeds_text_only], dim=0
                     )
+                    add_text_embeds = torch.cat([negative_pooled_prompt_embeds, pooled_prompt_embeds_text_only], dim=0)
                 else:
                     current_prompt_embeds = torch.cat(
-                        [null_prompt_embeds, augmented_prompt_embeds], dim=0
+                        [negative_prompt_embeds_facial, prompt_embeds_facial], dim=0
                     )
+                    add_text_embeds = torch.cat([negative_pooled_prompt_embeds, pooled_text_embeds], dim=0)
+
+                unet_added_cond_kwargs = {"text_embeds": add_text_embeds, "time_ids": add_time_ids}
 
                 # predict the noise residual
                 noise_pred = self.unet(
@@ -554,7 +636,9 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
                     t,
                     encoder_hidden_states=current_prompt_embeds,
                     cross_attention_kwargs=cross_attention_kwargs,
-                ).sample
+                    added_cond_kwargs=unet_added_cond_kwargs,
+                    # return_dict=False, ### [0]
+                ).sample 
 
                 # perform guidance
                 if do_classifier_free_guidance:
@@ -564,6 +648,10 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
                     )
                 else:
                     assert 0, "Not Implemented"
+
+                # if do_classifier_free_guidance and guidance_rescale > 0.0:
+                #     # Based on 3.4. in https://arxiv.org/pdf/2305.08891.pdf 
+                #     noise_pred = rescale_noise_cfg(noise_pred, noise_pred_text, guidance_rescale=guidance_rescale) ### TODO optimal noise and LCM
 
                 # compute the previous noisy sample x_t -> x_t-1
                 latents = self.scheduler.step(
@@ -577,40 +665,31 @@ class ConsistentIDStableDiffusionPipeline(StableDiffusionPipeline):
                     progress_bar.update()
                     if callback is not None and i % callback_steps == 0:
                         callback(i, t, latents)
+        
+        # make sure the VAE is in float32 mode, as it overflows in float16
+        if self.vae.dtype == torch.float16 and self.vae.config.force_upcast:
+            self.upcast_vae()
+            latents = latents.to(next(iter(self.vae.post_quant_conv.parameters())).dtype)
 
-        if output_type == "latent":
-            image = latents
-            has_nsfw_concept = None
-        elif output_type == "pil":
-            # 9.1 Post-processing
-            image = self.decode_latents(latents)
-
-            # 9.2 Run safety checker
-            image, has_nsfw_concept = self.run_safety_checker(
-                image, device, prompt_embeds.dtype
-            )
-
-            # 9.3 Convert to PIL
-            image = self.numpy_to_pil(image)
+        if not output_type == "latent":
+            image = self.vae.decode(latents / self.vae.config.scaling_factor, return_dict=False)[0]
         else:
-            # 9.1 Post-processing
-            image = self.decode_latents(latents)
+            image = latents
+            return StableDiffusionXLPipelineOutput(images=image)
 
-            # 9.2 Run safety checker
-            image, has_nsfw_concept = self.run_safety_checker(
-                image, device, prompt_embeds.dtype
-            )
+        # apply watermark if available
+        # if self.watermark is not None:
+        #     image = self.watermark.apply_watermark(image)
 
-        # Offload last model to CPU
-        if hasattr(self, "final_offload_hook") and self.final_offload_hook is not None:
-            self.final_offload_hook.offload()
+        image = self.image_processor.postprocess(image, output_type=output_type)
+
+        # Offload all models
+        self.maybe_free_model_hooks()
 
         if not return_dict:
-            return (image, has_nsfw_concept)
+            return (image,)
 
-        return StableDiffusionPipelineOutput(
-            images=image, nsfw_content_detected=has_nsfw_concept
-        )
+        return StableDiffusionXLPipelineOutput(images=image)
 
 
 

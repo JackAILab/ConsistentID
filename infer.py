@@ -11,7 +11,7 @@ device = "cuda"
 base_model_path = "SG161222/Realistic_Vision_V6.0_B1_noVAE"
 consistentID_path = "JackAILab/ConsistentID/ConsistentID-v1.bin" 
 image_encoder_path = "laion/CLIP-ViT-H-14-laion2B-s32B-b79K"
-bise_net_cp = "/mnt/data/sysu/Users/huangjiehui/pretrained_model/ConsistentID/face_parsing.pth" ### Download this model manually and specify the path
+bise_net_cp = "JackAILab/ConsistentID/face_parsing.pth" ### Download this model manually and specify the path
 
 ### Load base model
 pipe = ConsistentIDStableDiffusionPipeline.from_pretrained(
