@@ -6,10 +6,14 @@
 <!-- ## <div align="center"><b>ConsistentID</b></div> -->
 
 <div align="center">
-  
-## ConsistentID : Portrait Generation with Multimodal Fine-Grained Identity Preserving  
+
+<h2 align="center"> <a href="https://arxiv.org/abs/2404.16771">ConsistentID : Portrait Generation with Multimodal Fine-Grained Identity Preserving</a></h2>
+
+<h5 align="center"> If you like our project, please give us a star ⭐ on GitHub for the latest update.  </h2>
+ 
 [![arXiv](https://img.shields.io/badge/Arxiv-2411.17440-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2404.16771)
-[![zhihu](https://img.shields.io/badge/-Twitter@Adina%20Yakup%20-black?logo=twitter&logoColor=1D9BF0)](https://x.com/AdinaYakup/status/1862604191631573122)
+[![zhihu](https://img.shields.io/badge/-Twitter@Dreaming%20Tulpa%20-black?logo=twitter&logoColor=1D9BF0)](https://x.com/dreamingtulpa/status/1784617299917385839)
+[![zhihu](https://img.shields.io/badge/-Twitter@AK%20-black?logo=twitter&logoColor=1D9BF0)](https://x.com/_akhaliq/status/1783701730653340142)
 [![License](https://img.shields.io/badge/License-Apache%202.0-yellow)](https://github.com/JackAILab/ConsistentID/LICENSE)
 
 [📄[Paper](https://arxiv.org/abs/2404.16771)] &emsp; [📸[Model Card](https://huggingface.co/JackAILab/ConsistentID)]  &emsp; [🚩[Project Page](https://ssugarwh.github.io/consistentid.github.io/)] &emsp; <br>
