@@ -7,11 +7,15 @@
 
 <div align="center">
   
-## ConsistentID : Portrait Generation with Multimodal Fine-Grained Identity Preserving  [![Paper page](https://huggingface.co/datasets/huggingface/badges/resolve/main/paper-page-md-dark.svg)](https://arxiv.org/abs/2404.16771)
-[📄[Paper](https://arxiv.org/abs/2404.16771)] &emsp; [🚩[Project Page](https://ssugarwh.github.io/consistentid.github.io/)] &emsp; <br>
+## ConsistentID : Portrait Generation with Multimodal Fine-Grained Identity Preserving  
+[![arXiv](https://img.shields.io/badge/Arxiv-2411.17440-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2404.16771)
+[![zhihu](https://img.shields.io/badge/-Twitter@Adina%20Yakup%20-black?logo=twitter&logoColor=1D9BF0)](https://x.com/AdinaYakup/status/1862604191631573122)
+[![License](https://img.shields.io/badge/License-Apache%202.0-yellow)](https://github.com/JackAILab/ConsistentID/LICENSE)
 
-[📸[Model Card](https://huggingface.co/JackAILab/ConsistentID)]  &emsp; [🤗[Hugging Face](https://huggingface.co/spaces/JackAILab/ConsistentID)] <br>
+[📄[Paper](https://arxiv.org/abs/2404.16771)] &emsp; [📸[Model Card](https://huggingface.co/JackAILab/ConsistentID)]  &emsp; [🚩[Project Page](https://ssugarwh.github.io/consistentid.github.io/)] &emsp; <br>
 
+[🤗[SDv1.5 Hugging Face](https://huggingface.co/spaces/JackAILab/ConsistentID)] &emsp;
+[🤗[SDXL Hugging Face](https://huggingface.co/spaces/JackAILab/ConsistentID-SDXL)] <br>
 </div>
 
 ### 🌠  **Key Features:**
@@ -28,7 +32,6 @@
   
   <img src="https://github.com/JackAILab/ConsistentID/assets/135965025/f949a03d-bed2-4839-a995-7b451d8c981b" height=450>
 
-
 </p>
 
 
@@ -38,8 +41,9 @@ Your star will help facilitate the process. The extended code and data will be p
 - [x] Release the SDXL model trained with more data, with enhanced resolution and generalizability.
 - [ ] Release the multi-ID input version, inpainting with controlnet version et. al to guide the improvement of diversity.
 
-## Release
-- [2024/12/27] 🔥 We update the ConsistentIDv1 [SDXL model](https://huggingface.co/JackAILab/ConsistentID) and pretrained parameters.
+## 📢 Release
+- [2024/12/28] 🔥 We have updated the technical details of the [paper](https://arxiv.org/abs/2404.16771).
+- [2024/12/27] 🔥 We update the pretrained parameters of [ConsistentID_SDXL](https://huggingface.co/JackAILab/ConsistentID/tree/main) and you can now experience SDXL's [Demo](https://huggingface.co/spaces/JackAILab/ConsistentID-SDXL). 
 - [2024/05/28] 🔥 We release the data production instructions and [scripts](https://github.com/JackAILab/ConsistentID/blob/main/data/FGID.sh).
 - [2024/04/28] 🔥 We release the [pre-trained checkpoints](https://huggingface.co/JackAILab/ConsistentID) and [gradio demo](https://huggingface.co/spaces/JackAILab/ConsistentID)!
 - [2024/04/25] 🔥 We release the [technical report](https://arxiv.org/abs/2404.16771).
