@@ -15,11 +15,13 @@
 [![zhihu](https://img.shields.io/badge/-Twitter@Dreaming%20Tulpa%20-black?logo=twitter&logoColor=1D9BF0)](https://x.com/dreamingtulpa/status/1784617299917385839)
 [![zhihu](https://img.shields.io/badge/-Twitter@AK%20-black?logo=twitter&logoColor=1D9BF0)](https://x.com/_akhaliq/status/1783701730653340142)
 [![License](https://img.shields.io/badge/License-Apache%202.0-yellow)](https://github.com/JackAILab/ConsistentID/LICENSE)
+[![量子位](https://img.shields.io/badge/媒体报道-量子位-09B83E?logo=wechat&logoColor=white)](https://mp.weixin.qq.com/s/mCzjW7VJHs3SoZtMmfvf0w)
 
 [📄[Paper](https://arxiv.org/abs/2404.16771)] &emsp; [📸[Model Card](https://huggingface.co/JackAILab/ConsistentID)]  &emsp; [🚩[Project Page](https://ssugarwh.github.io/consistentid.github.io/)] &emsp; <br>
 
 [🤗[SDv1.5 Hugging Face](https://huggingface.co/spaces/JackAILab/ConsistentID)] &emsp;
-[🤗[SDXL Hugging Face](https://huggingface.co/spaces/JackAILab/ConsistentID-SDXL)] <br>
+[🤗[SDXL Hugging Face](https://huggingface.co/spaces/JackAILab/ConsistentID-SDXL)] &emsp;
+[🤗[FGID Dataset](https://huggingface.co/datasets/JackAILab/FGID)] &emsp; <br>
 </div>
 
 ### 🌠  **Key Features:**
@@ -43,9 +45,12 @@
 Your star will help facilitate the process. The extended code and data will be published upon acceptance of our paper.
 - [x] Release ConsistentID training, evaluation code, and demo!
 - [x] Release the SDXL model trained with more data, with enhanced resolution and generalizability.
-- [ ] Release the multi-ID input version, inpainting with controlnet version et. al to guide the improvement of diversity.
+- [x] Release the FGID dataset with improved Qwen2.5-VL captions and its evaluation benchmark.
+
 
 ## 📢 Release
+- [2025/12/31] 🔥 The ConsistentID paper has been officially accepted by TPAMI, with more updated technical details and data released.
+- [2024/12/28] 🔥 We have updated the technical details of the [paper](https://arxiv.org/abs/2404.16771).
 - [2024/12/28] 🔥 We have updated the technical details of the [paper](https://arxiv.org/abs/2404.16771).
 - [2024/12/27] 🔥 We update the pretrained parameters of [ConsistentID_SDXL](https://huggingface.co/JackAILab/ConsistentID/tree/main) and you can now experience SDXL's [Demo](https://huggingface.co/spaces/JackAILab/ConsistentID-SDXL). 
 - [2024/05/28] 🔥 We release the data production instructions and [scripts](https://github.com/JackAILab/ConsistentID/blob/main/data/FGID.sh).
